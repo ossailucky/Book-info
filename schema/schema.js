@@ -1,5 +1,6 @@
-import graphql, { GraphQLSchema } from "graphql";
-const { GraphQLObjectType, GraphQLString } = graphql;
+import graphql from "graphql";
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID  } = graphql;
+import _ from "lodash"
 
 
 //dummy data 
@@ -11,7 +12,7 @@ var books = [
 const BookType = new GraphQLObjectType({
     name: "Book",
     fields: ()=>({
-        id: {type: GraphQLString},
+        id: {type: GraphQLID},
         name: {type: GraphQLString},
         genre: {type: GraphQLString}
     })
@@ -22,13 +23,10 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         book:{
             type: BookType,
-            args: {id:{type: GraphQLString}},
+            args: {id:{type: GraphQLID}},
             resolve(parent,args){
                 // code to get data from db / other source
-                books.filter((book)=>{
-                   return args.id === id;
-                    
-                })
+               return _.find(books,{id:args.id});
 
             }
         }
